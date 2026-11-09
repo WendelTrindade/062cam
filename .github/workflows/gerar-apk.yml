@@ -1,0 +1,52 @@
+name: Gerar APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Abrir o pacote do projeto
+        run: |
+          for z in 062cam-projeto.zip 062cam.zip; do
+            if [ -f "$z" ]; then
+              unzip -o -q "$z" -x ".github/*"
+              echo "Pacote $z aberto"
+              break
+            fi
+          done
+          if [ ! -d app ]; then
+            echo "ERRO: nao achei a pasta app nem o arquivo 062cam-projeto.zip ou 062cam.zip na pagina principal do repositorio."
+            exit 1
+          fi
+          ls -la
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.7"
+
+      - name: Baixar modelo de voz em portugues
+        run: |
+          curl -L -o model.zip https://alphacephei.com/vosk/models/vosk-model-small-pt-0.3.zip
+          unzip -q model.zip
+          mkdir -p app/src/main/assets
+          rm -rf app/src/main/assets/model-pt
+          mv vosk-model-small-pt-0.3 app/src/main/assets/model-pt
+
+      - name: Compilar
+        run: gradle assembleDebug --no-daemon --stacktrace
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 062Cam-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
