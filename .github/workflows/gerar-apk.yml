@@ -13,18 +13,25 @@ jobs:
 
       - name: Abrir o pacote do projeto
         run: |
-          for z in 062cam-projeto.zip 062cam.zip; do
-            if [ -f "$z" ]; then
-              unzip -o -q "$z" -x ".github/*"
-              echo "Pacote $z aberto"
-              break
-            fi
+          # Usa o .zip com a versao mais nova, qualquer que seja o nome do arquivo
+          best=""
+          bestv=-1
+          for z in *.zip; do
+            [ -f "$z" ] || continue
+            v=$(unzip -p "$z" app/build.gradle.kts 2>/dev/null | grep -o 'versionCode = [0-9]*' | grep -o '[0-9]*' || true)
+            [ -z "$v" ] && continue
+            echo "Encontrado: $z (versao $v)"
+            if [ "$v" -gt "$bestv" ]; then best="$z"; bestv=$v; fi
           done
+          if [ -n "$best" ]; then
+            unzip -o -q "$best" -x ".github/*"
+            echo "USANDO: $best (versao $bestv)"
+          fi
           if [ ! -d app ]; then
-            echo "ERRO: nao achei a pasta app nem o arquivo 062cam-projeto.zip ou 062cam.zip na pagina principal do repositorio."
+            echo "ERRO: nao achei nenhum .zip do 062 Cam na pagina principal do repositorio."
             exit 1
           fi
-          ls -la
+          grep -E "versionCode|versionName" app/build.gradle.kts
 
       - uses: actions/setup-java@v4
         with:
