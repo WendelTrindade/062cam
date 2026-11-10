@@ -19,3 +19,22 @@ Vídeos: Filmes/062Cam · Fotos: Imagens/062Cam
 2. Envie todos os arquivos desta pasta.
 3. Crie o arquivo `.github/workflows/gerar-apk.yml` pelo botão "Add file > Create new file".
 4. Em Actions, rode "Gerar APK" e baixe o arquivo 062Cam-apk.
+
+## Ligar e desligar
+O app abre desligado. Toque no botão amarelo para ligar (câmera e microfone começam a funcionar).
+Para desligar: botão de energia no topo da tela, "Desligar" na notificação, ou fechando o app
+pela tela de apps recentes (se não estiver gravando).
+
+## Tela escura
+Com o app ligado, depois de 30 s sem tocar a tela fica preta, com brilho mínimo, mostrando só
+"062 Cam ouvindo" (verde) ou "GRAVANDO 00:00" (vermelho). Toque duas vezes para voltar.
+
+## Editor de vídeo
+Toque na miniatura da galeria (ou em "Meus vídeos") e depois em "Editar".
+- Zoom: cria um trecho com zoom; arraste o quadro amarelo até o ponto e escolha 1,5× a 4×.
+- Lento / Acelerar: trecho em 0,25×, 0,5×, 2× ou 4×.
+- Zoom e velocidade podem ficar no mesmo trecho; cada um pode ser repetido em vários trechos.
+- Corte: arraste as pontas amarelas da faixa de imagens.
+- Som: liga ou desliga o som do vídeo editado.
+Salvar gera um vídeo novo em Filmes/062Cam; o original continua guardado.
+Também dá para abrir pela galeria do celular: Compartilhar > "Editar no 062 Cam".
